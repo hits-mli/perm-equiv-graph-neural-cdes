@@ -1,0 +1,45 @@
+wandb:
+    project: GNCDEs
+
+epochs: 200
+patience: 15
+min_epochs: 20
+
+seed: 4242
+log_freq: 1
+eval_freq: 5
+logger_name: Temporal GRL
+checkpoint_dir: .checkpoints/
+checkpoint_name: gncde
+
+model:
+    name: pgt_graph_neural_ode
+    vector_field:
+        name: GNODEFloorVectorField
+        hidden_dim: 32
+        num_layers: 4
+        num_nodes: 129
+        use_control: False
+    hidden_dim: 32
+    data_dim: 8
+    feature_dim: 1
+    use_initial: True
+    interpolation: cubic
+    method: Tsit5
+    return_sequence: False
+optimiser:
+    name: adamw
+    weight_decay: 1e-4
+    gradient_clipping: True
+    schedule:
+        name: constant_schedule
+        value: 1e-2
+loss:
+    name: MSE
+dataset:
+    name: england-covid
+    window_size: 5
+    stride: 5
+    split_ratio: [0.6, 0.2, 0.2]
+    interpolation: cubic
+    seed: 1234

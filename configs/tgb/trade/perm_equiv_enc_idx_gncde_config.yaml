@@ -1,0 +1,49 @@
+wandb:
+    project: GNCDEs
+
+epochs: 200
+patience: 15
+min_epochs: 200
+
+seed: 1234
+log_freq: 1
+eval_freq: 5
+logger_name: Temporal GRL
+checkpoint_dir: .checkpoints/
+checkpoint_name: perm_equiv_gncde
+
+model:
+    name: tgb_graph_neural_cde
+    vector_field:
+        name: PermEquivGraphVectorField
+        hidden_dim: 32
+        num_layers: 4
+        data_embed_dim: 8
+        num_nodes: 255
+        enc_idx: True
+        enc_type: emb
+        idx_dim: 8
+    hidden_dim: 32
+    use_initial: True
+    interpolation: cubic
+    method: Tsit5
+    return_sequence: False
+optimiser:
+    name: adamw
+    weight_decay: 1e-4
+    gradient_clipping: True
+    schedule:
+        name: constant_schedule
+        value: 1e-2
+loss:
+    name: MSE
+    # name: L1
+dataset:
+    name: tgbn-trade
+    window_size: 3
+    stride: 3
+    frequency: None
+    split_ratio: [0.6, 0.2, 0.2]
+    data_dir: datasets
+    interpolation: cubic
+    seed: 1234

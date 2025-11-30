@@ -1,0 +1,50 @@
+wandb:
+    project: GNCDEs
+
+epochs: 200
+patience: 15
+min_epochs: 20
+
+seed: 1234
+log_freq: 1
+eval_freq: 5
+logger_name: Temporal GRL
+checkpoint_dir: .checkpoints/
+checkpoint_name: stg_ncde
+
+model:
+    name: pgt_st_graph_neural_cde
+    f_func:
+        name: FinalTanhF
+        hidden_dim: 32
+        num_layers: 3
+        data_embed_dim: 16 # needs to be same as data_dim
+    g_func:
+        name: STGraphVectorField
+        hidden_dim: 32
+        num_layers: 2
+        node_embed_dim: 5
+        num_nodes: 1000
+        cheb_k: 2
+    data_dim: 16
+    feature_dim: 1
+    use_initial: True
+    interpolation: cubic
+    method: Tsit5
+    return_sequence: False
+optimiser:
+    name: adamw
+    weight_decay: 1e-4
+    gradient_clipping: True
+    schedule:
+        name: constant_schedule
+        value: 1e-2
+loss:
+    name: MSE
+dataset:
+    name: twitter-tennis
+    window_size: 10
+    stride: 10
+    split_ratio: [0.6, 0.2, 0.2]
+    interpolation: cubic
+    seed: 1234

@@ -1,0 +1,50 @@
+wandb:
+    project: GNCDEs
+
+epochs: 2000
+patience: 200
+min_epochs: 200
+
+log_freq: 25
+eval_freq: 25
+logger_name: Temporal GRL
+checkpoint_dir: .checkpoints/
+checkpoint_name: gncde
+
+model:
+    name: astgcn
+    input_dim: 3
+    output_dim: 2
+    num_nodes: 100
+    node_embed_dim: 8
+    num_time_steps: 120 # must b 1.2 * what is below
+    channels: 16
+    K: 3
+optimiser:
+    name: adamw
+    weight_decay: 1e-4
+    gradient_clipping: True
+    schedule:
+        name: constant_schedule
+        value: 1e-2
+dataset:
+    name: sir # choices=["heat", "gene", "mutualistic"], default="heat"
+    batch_size: 50
+    dynamic_graph: True # static graph or dynamic graph
+    all_dynamic: True # Structural change for training phase only or for the whole sequence
+    graph_type: grid # choices=["grid", "random", "power_law", "small_world", "community"], default="grid"
+    split_ratio: [0.8, 0.2] # type=list, default=[0.8, 0.2], help="train and test ratio"
+    num_nodes: 100
+    final_time: 1.0 # terminal time
+    time_tick: 100 # number of observations
+    sampling_type: irregular # choices=["irregular", "equal"], default="irregular"
+    method: Tsit5
+    layout: community # choices=["community", "degree"], default="community"
+    operator_type: norm_lap # choices=["lap", "norm_lap", "kipf", "norm_adj"], default="norm_lap",
+    seed: 1234
+    padding_mode: same
+    cache_dir: .cache
+    interpolation: cubic
+    amp_range: [1.0, 1.0]
+    beta: [0.25, 0.3]
+    gamma: [0.7, 0.3]

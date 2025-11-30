@@ -1,0 +1,35 @@
+wandb:
+    project: GNCDEs
+
+epochs: 2000
+patience: 200
+min_epochs: 200
+
+log_freq: 25
+eval_freq: 25
+logger_name: Temporal GRL
+checkpoint_dir: .checkpoints/
+checkpoint_name: gncde
+
+model:
+    name: dcrnn
+    input_dim: 8
+    num_nodes: 129
+    hidden_dim: 16
+    num_time_steps: 12
+    order: 3
+    num_layers: 2
+optimiser:
+    name: adamw
+    weight_decay: 1e-4
+    gradient_clipping: True
+    schedule:
+        name: constant_schedule
+        value: 1e-2
+dataset:
+    name: england-covid
+    window_size: 5
+    stride: 5
+    split_ratio: [0.6, 0.2, 0.2]
+    interpolation: cubic
+    seed: 1234

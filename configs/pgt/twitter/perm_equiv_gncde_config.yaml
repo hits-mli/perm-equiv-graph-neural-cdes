@@ -1,0 +1,45 @@
+wandb:
+    project: GNCDEs
+
+epochs: 200
+patience: 15
+min_epochs: 20
+
+seed: 1234
+log_freq: 1
+eval_freq: 5
+logger_name: Temporal GRL
+checkpoint_dir: .checkpoints/
+checkpoint_name: perm_equiv_gncde
+
+model:
+    name: pgt_graph_neural_cde
+    vector_field:
+        name: PermEquivGraphVectorField
+        hidden_dim: 64
+        num_layers: 3
+        data_embed_dim: 16 # needs to be same as data_dim
+        num_nodes: 1000
+    data_dim: 16
+    feature_dim: 1
+    hidden_dim: 64
+    use_initial: True
+    interpolation: cubic
+    method: Tsit5
+    return_sequence: False
+optimiser:
+    name: adamw
+    weight_decay: 1e-4
+    gradient_clipping: True
+    schedule:
+        name: constant_schedule
+        value: 1e-2
+loss:
+    name: MSE
+dataset:
+    name: twitter-tennis
+    window_size: 10
+    stride: 10
+    split_ratio: [0.6, 0.2, 0.2]
+    interpolation: cubic
+    seed: 1234

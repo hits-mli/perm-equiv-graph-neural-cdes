@@ -1,0 +1,10 @@
+data/
+figures/
+slurm_logs/
+wandb/
+.cache/
+.checkpoints/
+
+**/__pycache__/
+
+*.ipynb
